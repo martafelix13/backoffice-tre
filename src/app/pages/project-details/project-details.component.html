@@ -1,0 +1,58 @@
+<div class="project-details-container">
+    <h1>Project Journey</h1>
+  
+    <!-- Horizontal Timeline -->
+    <div class="journey-timeline">
+      <div *ngFor="let phase of phases; let i = index" 
+           class="timeline-step"
+           [class.completed]="i < currentPhaseIndex"
+           [class.active]="i === currentPhaseIndex"
+           [class.rejected]="phase.status === 'Rejected'">
+  
+        <div class="step-marker"></div>
+        <div class="step-info">
+          <h2>{{ phase.name }}</h2>
+          <p>Status: {{ phase.status }}</p>
+          <p *ngIf="phase.status === 'Rejected'" class="rejection-message">This phase has been rejected.</p>
+        </div>
+      </div>
+    </div>
+  
+    <hr>
+  
+    <!-- Project Details -->
+    <div class="project-info">
+      <h2>Project Details</h2>
+      <p><strong>Project ID:</strong> {{ project.id }}</p>
+      <p><strong>Title:</strong> {{ project.title }}</p>
+      <p><strong>Description:</strong> {{ project.description }}</p>
+      <p><strong>Deadline:</strong> {{ project.deadline }}</p>
+      <p><strong>Organization:</strong> {{ project.organization }}</p>
+      <p><strong>Responsible:</strong> {{ project.responsable || 'N/A' }}</p>
+      <p><strong>Internal Storage:</strong> {{ project.internal_storage ? 'Yes' : 'No' }}</p>
+      <p><strong>Last Update:</strong> {{ project.last_update }}</p>
+      <p><strong>Owner:</strong> {{ project.owner }}</p>
+    </div>
+  
+    <hr>
+
+    <!-- Legal Agreement Documents -->
+    <div class="legal-documents" *ngIf="this.currentPhaseIndex > 0">
+      <h2>Legal Agreement Documents</h2>
+      <ul class="document-list">
+        <li *ngFor="let document of project.legal_documents" class="document-item">
+          <a [href]="document.download_url" target="_blank" class="document-link">
+            <mat-icon class="download-icon">file_download</mat-icon>
+            {{ document.filename }}
+          </a>
+          <span class="last-updated">Upload Date: {{ document.upload_date | date:'medium' }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Buttons -->
+    <div class="action-buttons" *ngIf="currentPhaseIndex < phases.length">
+      <button class="validate-btn" (click)="validateCurrentStep()">Validate Current Step</button>
+      <button class="reject-btn" (click)="rejectCurrentStep()">Reject Current Step</button>
+    </div>
+  </div>

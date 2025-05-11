@@ -1,0 +1,179 @@
+.project-details-container {
+    padding: 32px;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  
+  .project-id {
+    text-align: center;
+    margin-bottom: 32px;
+    font-size: 18px;
+  }
+  
+  .journey-timeline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 48px;
+    overflow-x: auto;
+    padding: 20px;
+  }
+  
+  .timeline-step {
+    text-align: center;
+    position: relative;
+    flex: 1;
+    min-width: 150px;
+  }
+  
+  .step-marker {
+    width: 20px;
+    height: 20px;
+    background: gray;
+    border-radius: 50%;
+    margin: 0 auto 8px;
+    transition: background 0.3s;
+  }
+  
+  .step-info h2 {
+    font-size: 16px;
+    margin: 8px 0 4px 0;
+  }
+  
+  .step-info p {
+    font-size: 14px;
+    margin: 0;
+  }
+  
+  .timeline-step.completed .step-marker {
+    background: green;
+  }
+  
+  .timeline-step.active .step-marker {
+    background: blue;
+  }
+  
+  .timeline-step.rejected .step-marker {
+    background: red;
+  }
+  
+  .rejection-message {
+    color: red;
+    font-size: 12px;
+  }
+  
+  .project-info {
+    background: #ffffff; /* Pure white background */
+    padding: 32px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Stronger, softer shadow */
+    margin-bottom: 40px;
+    color: #333333; /* Darker text */
+  }
+  
+  .project-info h2 {
+    margin-bottom: 24px;
+    text-align: center;
+    font-size: 24px;
+    color: #222222; /* Even stronger title color */
+  }
+  
+  .project-info p {
+    margin: 12px 0;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #333333;
+  }
+  
+  
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+  }
+  
+  .validate-btn, .reject-btn {
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .validate-btn {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .validate-btn:hover {
+    background-color: #45a049;
+  }
+  
+  .reject-btn {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .reject-btn:hover {
+    background-color: #e53935;
+  }
+  
+  /* Styling for the legal-documents section */
+.legal-documents {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.legal-documents h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.document-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.document-item {
+  margin-bottom: 10px;
+}
+
+.document-link {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.3s ease;
+}
+
+.document-link:hover {
+  color: #0056b3;
+}
+
+.download-icon {
+  font-size: 1.2rem;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+.document-link:hover .download-icon {
+  color: #0056b3;
+}
+
+.last-updated {
+  display: block;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 5px;
+}
