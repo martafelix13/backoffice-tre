@@ -1,5 +1,5 @@
 from io import BytesIO
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, json, request, jsonify, send_file
 from flask_cors import CORS
 from gridfs import GridFS
 from pymongo import MongoClient
@@ -20,7 +20,7 @@ dbFiles = client["files_system"]
 fs = GridFS(dbFiles)
 
 projects_collection = dbProject["project_details"]
-pipelines_collection = dbPipeline["pipelines_details"]
+pipelines_collection = dbPipeline["pipeline_details"]
 
 
 # Helper to convert ObjectId to string
@@ -101,23 +101,72 @@ def update_project_status(id):
 
 @app.route("/api/pipelines", methods=["GET"])
 def get_pipelines():
-    pipelines = list(pipelines_collection.find())
-    pipelines = [serialize_doc(p) for p in pipelines]
+
+    pipelines = list(pipelines_collection.find({},{"_id": 0}))
+    print("Pipelines:", pipelines)  # Debugging line
     return jsonify(pipelines)
-def get_pipelines():
-    pipelines = list(pipelines_collection.find())
-    pipelines = [serialize_doc(p) for p in pipelines]
-    return jsonify(pipelines)
+
 
 @app.route("/api/pipelines", methods=["POST"])
 def create_pipeline():
-    data = request.json
+    data = request.get_json()
+    payload = data.get("payload")
 
-    if not data or "name" not in data:
+    print("Creating pipeline with data:", payload)
+
+    if not payload or "name" not in payload:
         return jsonify({"error": "Pipeline name is required"}), 400
-    result = pipelines_collection.insert_one(data)
-    pipeline = pipelines_collection.find_one({"_id": result.inserted_id})
-    return jsonify(serialize_doc(pipeline))
+
+    # Optional: check for duplicate payload name inside the JSON string
+    existing = pipelines_collection.find_one({
+        "payload": {"$regex": f'"name":"{payload["name"]}"'}
+    })
+    if existing:
+        return jsonify({"error": "Pipeline name already exists"}), 400
+
+    def get_next_string_id():
+        docs = pipelines_collection.find({}, {"id": 1})
+        max_id = 0
+        for doc in docs:
+            try:
+                max_id = max(max_id, int(doc.get("id", 0)))
+            except (ValueError, TypeError):
+                pass
+        return str(max_id + 1)
+
+    document = {
+        "id": get_next_string_id(),
+        "payload": json.dumps(payload)
+    }
+
+    result = pipelines_collection.insert_one(document)
+    return jsonify({"id": str(result.inserted_id)}), 201
+
+@app.route("/api/pipelines/<string:id>", methods=["PUT"])
+def update_pipeline(id):
+    data = request.json
+    payload = data.get("payload")
+
+    print("Updating pipeline with data:", data)  # Debugging line
+
+    if not payload or "name" not in payload or not data["id"]:
+        return jsonify({"error": "Pipeline name and ID are required"}), 400
+
+    result = pipelines_collection.update_one({"id": id}, {"$set": {"payload": json.dumps(payload)}})
+
+    if result.matched_count == 0:
+        return jsonify({"error": f"No pipeline found with id {id}"}), 40
+
+    return jsonify({"message": f"Pipeline {id} updated successfully"}), 200
+
+@app.route("/api/pipelines/<string:id>", methods=["DELETE"])
+def delete_pipeline(id):
+    print("Deleting pipeline with ID:", id)
+    result = pipelines_collection.delete_one({"id": id})
+    if result.deleted_count == 0:
+        return jsonify({"error": "Pipeline not found"}), 404
+    return jsonify({"message": "Pipeline deleted successfully"}), 200
+
 
 # Route to download a specific file by file ID
 @app.route("/download/<file_id>", methods=["GET"])
