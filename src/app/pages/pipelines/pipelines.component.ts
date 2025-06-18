@@ -85,7 +85,6 @@ createPipeline() {
 
   dialogRef.afterClosed().subscribe((result) => {
     if (result) {
-      // Save the new pipeline
       console.log('New Pipeline:', result);
       this.pipelineService.createPipeline(result).subscribe(
         (data) => {

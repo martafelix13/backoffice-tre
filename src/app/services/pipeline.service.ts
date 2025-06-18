@@ -8,7 +8,7 @@ export class PipelineService {
 
   constructor( private http: HttpClient ) {}
 
-   backendUrl = 'http://localhost:5000/api';
+   backendUrl = 'http://localhost:8081/api';
 
   getPipelines() {
     return this.http.get(`${this.backendUrl}/pipelines`);

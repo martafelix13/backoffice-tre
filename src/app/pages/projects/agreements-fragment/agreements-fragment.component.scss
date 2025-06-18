@@ -1,0 +1,161 @@
+.legal-documents {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.legal-documents h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.document-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.document-item {
+  margin-bottom: 10px;
+}
+
+.document-link {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.3s ease;
+}
+
+.document-link:hover {
+  color: #0056b3;
+}
+
+.download-icon {
+  font-size: 1.2rem;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+.document-link:hover .download-icon {
+  color: #0056b3;
+}
+
+.last-updated {
+  display: block;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 5px;
+}
+
+.agreements-fragment-container {
+  margin-top: 2rem;
+  .agreements-section {
+    margin-bottom: 2rem;
+  }
+  .agreements-card {
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  .agreements-card-header {
+    background: #0055a5;
+    color: #fff;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e5e5e5;
+    h3 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+  }
+  .agreements-card-body {
+    padding: 1.5rem;
+  }
+  .agreements-list, .agreements-review-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .agreements-list-item, .agreements-review-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f0f0f0;
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  .agreements-badge {
+    padding: 0.35em 0.8em;
+    border-radius: 1em;
+    font-size: 0.95em;
+    font-weight: 500;
+    &.success { background: #3bb273; color: #fff; }
+    &.danger { background: #e94e1b; color: #fff; }
+    &.warning { background: #f9b233; color: #222; }
+  }
+  .agreements-review-box {
+    background: #f4f8fb;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    border: 1px solid #e5e5e5;
+  }
+  .agreements-review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  .agreements-link {
+    font-weight: 600;
+    color: #0055a5;
+    text-decoration: underline;
+    &:hover { color: #003366; }
+  }
+  .agreements-review-actions {
+    margin-top: 0.5rem;
+  }
+  .agreements-feedback {
+    width: 100%;
+    min-height: 2.5em;
+    margin-bottom: 0.5em;
+    border-radius: 0.3em;
+    border: 1px solid #cfd8dc;
+    padding: 0.5em;
+    font-size: 1em;
+  }
+  .agreements-action-buttons {
+    display: flex;
+    gap: 0.5em;
+    margin-top: 0.5em;
+  }
+  .agreements-btn {
+    padding: 0.4em 1.2em;
+    border: none;
+    border-radius: 0.3em;
+    font-weight: 500;
+    cursor: pointer;
+    &.primary { background: #0055a5; color: #fff; }
+    &.success { background: #3bb273; color: #fff; }
+    &.danger { background: #e94e1b; color: #fff; }
+    &:hover { opacity: 0.92; }
+  }
+  .agreements-feedback-view {
+    margin-top: 0.5em;
+    color: #141414;
+    font-size: 0.97em;
+  }
+  .agreements-approve-all {
+    text-align: right;
+    margin-top: 1.5em;
+  }
+}

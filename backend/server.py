@@ -1,26 +1,33 @@
 from io import BytesIO
-from flask import Flask, json, request, jsonify, send_file
+from flask import Blueprint, Flask, json, request, jsonify, send_file
 from flask_cors import CORS
 from gridfs import GridFS
 from pymongo import MongoClient
 from bson import ObjectId
+
+from config import MONGO_URI, BACKEND_PORT
+
+from file_handling import file_handling_bp
+from tasks_management import task_management_bp
+from si_management import si_management_bp
 
 from communication import send_project_status_email
 
 app = Flask(__name__)
 CORS(app)
 
-# MongoDB connection
-MONGO_URI = "mongodb://localhost:27017/"
+app.register_blueprint(file_handling_bp, url_prefix='/files')
+app.register_blueprint(task_management_bp, url_prefix='/api')
+app.register_blueprint(si_management_bp, url_prefix='/api/si')
+
+
 client = MongoClient(MONGO_URI)
 dbProject = client["project"]
 dbPipeline = client["pipeline"]
 
-dbFiles = client["files_system"]
-fs = GridFS(dbFiles)
-
 projects_collection = dbProject["project_details"]
 pipelines_collection = dbPipeline["pipeline_details"]
+
 
 
 # Helper to convert ObjectId to string
@@ -29,41 +36,11 @@ def serialize_doc(doc):
     del doc["_id"]
     return doc
 
-# Routes
-@app.route('/api/projects/<string:id>/files', methods=['GET'])
-def get_files_by_project(id):
-    """Return all files for a specific project"""
-    print('Getting files for project ', id)
-    files = fs.find({"project_id": id})
-    file_list = []
-    for file in files:
-        existing_file = next((f for f in file_list if f["filename"] == file.type), None)
-        if existing_file:
-            if file.uploadDate > existing_file["upload_date"]:
-                file_list.remove(existing_file)
-                file_list.append({
-                    "filename": file.type,
-                    "download_url": f"download/{file._id}",
-                    "upload_date": file.uploadDate,
-                })
-        else:
-            file_list.append({
-                "filename": file.type,
-                "download_url": f"download/{file._id}",
-                "upload_date": file.uploadDate,
-            })
-
-    for item in file_list:
-        item['download_url'] = request.host_url + item['download_url']
-    print('Files from project ', id)
-    print(file_list)
-    return jsonify(file_list), 200
-
 @app.route("/api/projects", methods=["GET"])
 def get_projects():
     projects = list(projects_collection.find())
     projects = [serialize_doc(p) for p in projects]
-    print("Projects:", projects)  # Debugging line to check the projects
+    print("Projects:", projects)  
     return jsonify(projects)
 
 @app.route("/api/projects/<id>", methods=["GET"])
@@ -168,26 +145,7 @@ def delete_pipeline(id):
     return jsonify({"message": "Pipeline deleted successfully"}), 200
 
 
-# Route to download a specific file by file ID
-@app.route("/download/<file_id>", methods=["GET"])
-def download_file(file_id):
-    """
-    Download a file from GridFS by its file ID.
-    """
-    try:
-        # Retrieve the file from GridFS
-        file = fs.get(ObjectId(file_id))
-        return send_file(
-            BytesIO(file.read()),
-            mimetype="application/pdf",
-            as_attachment=True,
-            download_name=file.type
-        )
-    except Exception as e:
-        return jsonify({"error": str(e)}), 404
-
-
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+    app.run(port=BACKEND_PORT, debug=True)
 
 

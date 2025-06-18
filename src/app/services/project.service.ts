@@ -21,7 +21,7 @@ export class ProjectService {
 
   constructor(private http: HttpClient) { }
 
-  backendUrl = 'http://localhost:5000/api'
+  backendUrl = 'http://localhost:8081/api'
 
   getProjects(){
     return this.http.get(this.backendUrl + '/projects')
@@ -38,12 +38,5 @@ export class ProjectService {
   updateProjectStatus(id: string, newStatus: string){
     return this.http.patch<Project>(`${this.backendUrl}/projects/${id}`, { status: newStatus })
   }
-
-  getProjectFiles(id: string){
-    return this.http.get(`${this.backendUrl}/projects/${id}/files`)
-  }
-
-  downloadFile(fileid: string){
-    return this.http.get(`${this.backendUrl}/files/${fileid}`)
-  }
 }
+

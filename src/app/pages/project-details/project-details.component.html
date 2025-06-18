@@ -26,7 +26,7 @@
       <p><strong>Project ID:</strong> {{ project.id }}</p>
       <p><strong>Title:</strong> {{ project.title }}</p>
       <p><strong>Description:</strong> {{ project.description }}</p>
-      <p><strong>Deadline:</strong> {{ project.deadline }}</p>
+      <p><strong>Expiration Date:</strong> {{ project.expiration_date }}</p>
       <p><strong>Organization:</strong> {{ project.organization }}</p>
       <p><strong>Responsible:</strong> {{ project.responsable || 'N/A' }}</p>
       <p><strong>Internal Storage:</strong> {{ project.internal_storage ? 'Yes' : 'No' }}</p>
@@ -35,20 +35,11 @@
     </div>
   
     <hr>
-
     <!-- Legal Agreement Documents -->
-    <div class="legal-documents" *ngIf="this.currentPhaseIndex > 0">
-      <h2>Legal Agreement Documents</h2>
-      <ul class="document-list">
-        <li *ngFor="let document of project.legal_documents" class="document-item">
-          <a [href]="document.download_url" target="_blank" class="document-link">
-            <mat-icon class="download-icon">file_download</mat-icon>
-            {{ document.filename }}
-          </a>
-          <span class="last-updated">Upload Date: {{ document.upload_date | date:'medium' }}</span>
-        </li>
-      </ul>
-    </div>
+    <app-agreements-fragment [project]="project" *ngIf="this.currentPhaseIndex > 0"></app-agreements-fragment>
+
+     <!-- Metadata Documents -->
+    <app-metadata-fragment [project]="project" *ngIf="this.currentPhaseIndex > 1"></app-metadata-fragment>
 
     <!-- Buttons -->
     <div class="action-buttons" *ngIf="currentPhaseIndex < phases.length">

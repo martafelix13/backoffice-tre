@@ -4,10 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { convertStatus } from '../../shared/utils/status-converter';
 import { MatIconModule } from '@angular/material/icon';
+import { AgreementsFragmentComponent } from '../projects/agreements-fragment/agreements-fragment.component';
+import { MetadataFragmentComponent } from '../projects/metadata-fragment/metadata-fragment.component';
 
 @Component({
   selector: 'app-project-details',
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule, AgreementsFragmentComponent, MetadataFragmentComponent],
   templateUrl: './project-details.component.html',
   styleUrl: './project-details.component.scss'
 })
@@ -32,12 +34,6 @@ export class ProjectDetailsComponent {
       this.project = project;
       console.log(this.project);
       this.setupPhasesBasedOnProjectStatus();
-      if (this.project.status !== 'P-AR') {
-        this.projectService.getProjectFiles(this.projectId).subscribe(files => {
-          console.log(files);
-          project.legal_documents = files;
-        });
-      }   
     });
   }
 
