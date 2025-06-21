@@ -40,3 +40,10 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+.venv
+.env
+
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
